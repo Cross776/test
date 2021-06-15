@@ -1,158 +1,163 @@
+import java.io.*;
 import java.util.*;
 
+public enum Dictionary {
+    PLACEHOLDERADJECTIVE1("Placeholder", "adjective", "To Be Updated..."),
+    PLACEHOLDERADJECTIVE2("Placeholder", "adjective", "To Be Updated..."),
+    PLACEHOLDERADJECTIVE3("Placeholder", "adverb", "To Be Updated..."),
+    PLACEHOLDERCONJUNCTION("Placeholder", "connjunction", "To Be Updated..."),
+    PLACEHOLDERINTERJUNCTION("Placeholder", "interjection", "To Be Updated..."),
+    PLACEHOLDERNOUN1("Placeholder", "noun", "To Be Updated..."),
+    PLACEHOLDERNOUN2("Placeholder", "noun", "To Be Updated..."),
+    PLACEHOLDERNOUN3("Placeholder", "noun", "To Be Updated..."),
+    PLACEHOLDERPREPOSITION("Placeholder", "preposition", "To Be Updated..."),
+    PLACEHOLDERPRONOUN("Placeholder", "pronoun", "To Be Updated..."),
+    CSC340ADJECTIVE1("CSC340", "adjective", "Comfortable with Objects and Classes."),
+    CSC340ADJECTIVE2("CSC340", "adjective", "Ready for CSC 340."),
+    CSC340NOUN("CSC340", "noun", "Intro to Java."),
+    CSC340VERB("CSC340", "verb", "To learn Java."),
+    CSC340ADJECTIVE("CSC340", "adjective", "To learn Java."),
+    CSC340NOUN("CSC340", "noun", "Ready to create complex data structures."),
+    CSC340VERB("CSC340", "verb", "To create data structures"),
+    CSC340ADJECTIVE("CSC340", "adjective", "= java version of CSC310 + CSC340 + more."),
+    CSC340NOUN1("CSC340", "noun", "A CS upper division course."),
+    CSC340NOUN2("CSC340", "noun", "many hours outside of class."),
+    CSC340NOUN3("CSC340", "noun", "Programming Methodology."),
+    VERBVERB1("Verb", "noun", "Verb is a word or group of words that expresses an action(such as happen) or state (such as exist)."),
+    BOOKNOUN1("Book", "noun", "A set of pages."),
+    BOOKNOUN2("Book", "noun", "A written work published in printed or electronic form."),
+    BOOKVERB1("Book", "verb", "To arrange for someone to have a seat on a plane."),
+    BOOKVERB2("Book", "verb", "To arrange for something on a particular date."),
+    BOOKABLEADJECTIVE("Bookable", "adjective", "Can be ordered in advance."),
+    CONJUNCTION("Conjunction", "noun", "Conjunction is a word that joins words, phrases or sentences, for example 'and', 'but', 'or'."),
+    INTERJECTION("Interjection", "noun", "Interjection is a short sound, word or phrase an emotion. Oh!, Look Out! and Ow! are interjections."),
+    ADJECTIVE("Adjective", "noun", "Adjective is a word that describes a person or thing, for example big, red and clever in a big house, red wine and a clever idea.");
 
-public class wordsearch{
-  
-  /**Datafield declarations.*/
-  private static int width;
-  private static int length;
-  private static int wordCount;
-  private static  ArrayList<String> words;
-  private static  int[] positions;
-  private static char [][] search; 
-  private  static String input;
-  /**Int counter to count the errors. */
-  private static int  errorcount= 0; 
-  
-  /*Main method*/
-  public static void  main  (String [] args){
-    run();
-    printVertical();
-  }
-  
- /*
-  * @param void;
-  * @return void;
-  * Prints the finished wordsearch and related information.
-  */
-  public static void printVertical(){
-    for(int i =0; i <width; i++){
-      for(int ind =0; ind<length; ind ++){
-        System.out.print(search[i][ind]+ " ");
-      }
-      System.out.println(" "); 
+    private final String generalNote = "Dictionary";
+    private String keyword;
+    private String partOfSpeech;
+    private String definition;
+
+    private Dictionary(String keyword, String partOfSpeech, String definition) {
+        this.keyword = keyword;
+        this.partOfSpeech = partOfSpeech;
+        this.definition = definition;
     }
-    System.out.println("done");
-    System.out.println( width + "\t Lines deep");
-    System.out.println( length +"\t lines wide");
-    System.out.println("Find these words");
-    for(int i =0; i<wordCount; i++){
-      System.out.println(words.get(i));
-    }                    
-  }
-  /*
-  * @param void;
-  * @return void;
-  * Creates the wordsearch by calling other methods. 
-  */ 
-  public static void run(){
-    System.out.println("Welcome to the word search generator");
-    System.out.println("This simple java program will create a word search based on words you choose");
-    takeInput();
-    measurements();
-    fill();
-  }
-   /*
-  * @param void;
-  * @return void;
-  *Fills up the search array, applies the inputted words, 
-  * and randomly generates the rest of the characters.
-  */
-  public static void fill(){
-    int between,  strlen;
-    int x, y ;
-    positions = new int[wordCount]; 
-    for(int i =0; i < wordCount; i++){ //for each word in list
-      strlen = words.get(i).length();
-      between = width -strlen; 
-      x = randomRange(0, between);  //make sure it isnt a y coord anyone else is using. 
-      y = randomRange(0, length-5); 
-      if(search(positions,  y) ){
-        y++; 
-      }
-      positions[i] = y; 
-      for(int ind =0; ind <strlen; ind++){   // for each letter in the word, 
-        search[x][y] = words.get(i).charAt(ind); //put char into search array
-        x++;
-      } 
+
+    public String getKeyword() {
+        return this.keyword.toUpperCase();
     }
-    // fill empty slots. 
-    for (int i =0; i <length; i ++){
-      for (int ind =0; ind< width; ind++){
-        if(search[ind][i] == 0){
-          char t = (char) randomRange(97, 122); 
-          search[ind][i] = t;
+
+    public String partOfSpeech() {
+        return this.partOfSpeech;
+    }
+
+    @Override
+    public String toString() {
+        return this.keyword + " [" + this.partOfSpeech + "] : " + this.definition;
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+      
+        HashMap<String, ArrayList<Dictionary>> hmap = new HashMap<String, ArrayList<Dictionary>>();
+
+        for (Dictionary dict : Dictionary.values()) {
+
+                String keyword = dict.getKeyword();
+
+                ArrayList<Dictionary> list = (hmap.containsKey(keyword)) ? hmap.get(keyword) : new ArrayList<Dictionary>();
+                list.add(dict);
+                hmap.put(keyword, list);      
         }
-      }
+
+      
+        System.out.println("\n-----DICTIONARY JAVA  \n---- Sean Ibarra-\n");
+
+        Boolean quite = true;
+
+        do {                  
+            System.out.print("Search: ");
+            String userinput = input.nextLine();
+            String[] splited = userinput.split(" ");
+
+            String word = null;
+            Boolean requestDistinct = false;
+            String partOfSpeech = null;
+
+            if (splited.length > 0) {
+                word = splited[0];
+            }
+
+            String[] partOfSpeeches = {"noun", "verb", "adjective", "adverb", "pronoun", "preposition", "conjunction", "interjection"};
+            if (splited.length > 1 && splited[1]!= null) {
+                if (splited[1].equalsIgnoreCase("distinct")) {
+                   requestDistinct = true;
+                } else if (Arrays.asList(partOfSpeeches).contains(splited[1].toLowerCase())){
+                    partOfSpeech = splited[1];
+                } else {
+                    System.out.println("   |");
+                    System.out.println("    <2nd argument must be a part of speech or \"distinct\">");
+                    System.out.println("   |");
+                    continue;
+                }
+            }
+            if (splited.length > 2 && splited[2]!= null) {
+                if (splited[2].equalsIgnoreCase("distinct")) {
+                   requestDistinct = true;
+                } else if (Arrays.asList(partOfSpeeches).contains(splited[2].toLowerCase())){
+                    partOfSpeech = splited[2];
+                } else {
+                    System.out.println("   |");
+                    System.out.println("    <2nd argument must be a part of speech or \"distinct\">");
+                    System.out.println("   |");
+                    continue;
+                }
+            }
+
+            if(!userinput.equalsIgnoreCase("!q")) {
+                System.out.println("   |");
+                ArrayList<Dictionary> result = hmap.get(word.toUpperCase());
+                ArrayList<Dictionary> secondResult = (requestDistinct) ? returnDictionaryWithDistinctPartOfSpeech(result) : result;
+                ArrayList<Dictionary> thirdResult = (partOfSpeech != null) ? returnDictionaryWithSamePartOfSpeech(secondResult, partOfSpeech) : secondResult;
+
+                if (thirdResult != null && thirdResult.size()>0) {
+                    for(Dictionary key : thirdResult) {
+                        System.out.print("    " + key + "\n");
+                    }
+                } else {
+                    System.out.println("    <Not Found>");
+                }
+                System.out.println("   |");
+            } else {
+                System.out.println("\n----Thanks---");
+                quite = false;
+            }
+        } while(quite);
     }
-    
-  }//end method
-  
-  
-   /*
-  * @param  int array, int key. 
-  * @return boolean.
-  * searches array for the key. returns true if key is in array.
-  */
-  public static boolean search(int [ ] numbers, int key) {
-    for (int index = 0; index < numbers.length; index++)    {
-      if ( numbers[index] == key ){
-        return true;  //We found it!!!
-      }
+
+    public static ArrayList<Dictionary> returnDictionaryWithDistinctPartOfSpeech(ArrayList<Dictionary> dictList) {
+        HashMap<String, Dictionary> hMap = new HashMap<String, Dictionary>();
+        if (dictList != null) {
+            for(Dictionary dict : dictList) {
+                String partOfSpeech = dict.partOfSpeech();
+                if(!hMap.containsKey(partOfSpeech)) {
+                    hMap.put(partOfSpeech, dict);
+                }
+            }
+        }
+        return new ArrayList<Dictionary>(hMap.values());
     }
-    return false;
-  }
-  
-  /** 
-   * @param int low, int high : the bounding values for the range within which 
-   * the generated number should fall. 
-   * @returns int : the random number generated. 
-   * random number genertator for values
-   */ 
-  public static int randomRange(int low, int high){ 
-    Random generator = new Random();
-    return generator.nextInt(high-low+1) + low;
-  } //end method
-  
-   /*
-  * @param void;
-  * @return void;
-  * Takes user input, processes it and places it in relevate datafields. 
-  */
-  public static void takeInput(){
-    Scanner scan = new Scanner(System.in);
-    wordCount =0; 
-    words=  new ArrayList<String>(); 
-    System.out.println("What words do you want to look for? type each word on its own line." );
-    System.out.println("Enter 'end' when your list of words is complete.");
-    while (scan.hasNextLine()){
-      input = scan.next(); 
-      if(input.equals("end")){
-        scan.close();
-        break;
-      }
-      wordCount++;
-      words.add(input);
+
+    public static ArrayList<Dictionary> returnDictionaryWithSamePartOfSpeech(ArrayList<Dictionary> dictList, String partOfSpeech) {
+        ArrayList<Dictionary> result = new ArrayList<Dictionary>();
+        if (dictList != null) {
+            for(Dictionary dict : dictList) {
+                if (dict.partOfSpeech().equalsIgnoreCase(partOfSpeech)) {
+                    result.add(dict);
+                }
+            }
+        }
+        return result;
     }
-  }//end method
-  
-   /*
-  * @param void;
-  * @return void;
-  * Calculates size of the char array the word search uses. 
-  */
-  public static void measurements(){
-    System.out.println("Generating word search");
-    int i;
-    for(i =0; i<words.size(); i++){
-      if(words.get(i).length() > width){
-        width = words.get(i).length();
-      }
-    }
-    width = width *2; 
-    length = width + (width/3);
-    search = new char [width][length]; 
-  }
-  
-  
-}//end class
+}
