@@ -1,163 +1,66 @@
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
-public enum Dictionary {
-    PLACEHOLDERADJECTIVE1("Placeholder", "adjective", "To Be Updated..."),
-    PLACEHOLDERADJECTIVE2("Placeholder", "adjective", "To Be Updated..."),
-    PLACEHOLDERADJECTIVE3("Placeholder", "adverb", "To Be Updated..."),
-    PLACEHOLDERCONJUNCTION("Placeholder", "connjunction", "To Be Updated..."),
-    PLACEHOLDERINTERJUNCTION("Placeholder", "interjection", "To Be Updated..."),
-    PLACEHOLDERNOUN1("Placeholder", "noun", "To Be Updated..."),
-    PLACEHOLDERNOUN2("Placeholder", "noun", "To Be Updated..."),
-    PLACEHOLDERNOUN3("Placeholder", "noun", "To Be Updated..."),
-    PLACEHOLDERPREPOSITION("Placeholder", "preposition", "To Be Updated..."),
-    PLACEHOLDERPRONOUN("Placeholder", "pronoun", "To Be Updated..."),
-    CSC340ADJECTIVE1("CSC340", "adjective", "Comfortable with Objects and Classes."),
-    CSC340ADJECTIVE2("CSC340", "adjective", "Ready for CSC 340."),
-    CSC340NOUN("CSC340", "noun", "Intro to Java."),
-    CSC340VERB("CSC340", "verb", "To learn Java."),
-    CSC340ADJECTIVE("CSC340", "adjective", "To learn Java."),
-    CSC340NOUN("CSC340", "noun", "Ready to create complex data structures."),
-    CSC340VERB("CSC340", "verb", "To create data structures"),
-    CSC340ADJECTIVE("CSC340", "adjective", "= java version of CSC310 + CSC340 + more."),
-    CSC340NOUN1("CSC340", "noun", "A CS upper division course."),
-    CSC340NOUN2("CSC340", "noun", "many hours outside of class."),
-    CSC340NOUN3("CSC340", "noun", "Programming Methodology."),
-    VERBVERB1("Verb", "noun", "Verb is a word or group of words that expresses an action(such as happen) or state (such as exist)."),
-    BOOKNOUN1("Book", "noun", "A set of pages."),
-    BOOKNOUN2("Book", "noun", "A written work published in printed or electronic form."),
-    BOOKVERB1("Book", "verb", "To arrange for someone to have a seat on a plane."),
-    BOOKVERB2("Book", "verb", "To arrange for something on a particular date."),
-    BOOKABLEADJECTIVE("Bookable", "adjective", "Can be ordered in advance."),
-    CONJUNCTION("Conjunction", "noun", "Conjunction is a word that joins words, phrases or sentences, for example 'and', 'but', 'or'."),
-    INTERJECTION("Interjection", "noun", "Interjection is a short sound, word or phrase an emotion. Oh!, Look Out! and Ow! are interjections."),
-    ADJECTIVE("Adjective", "noun", "Adjective is a word that describes a person or thing, for example big, red and clever in a big house, red wine and a clever idea.");
+public class DictionaryDemo {
 
-    private final String generalNote = "Dictionary";
-    private String keyword;
-    private String partOfSpeech;
-    private String definition;
+public static void main(String[] args) {
 
-    private Dictionary(String keyword, String partOfSpeech, String definition) {
-        this.keyword = keyword;
-        this.partOfSpeech = partOfSpeech;
-        this.definition = definition;
-    }
+Map<String, List<String>> map = new HashMap<String, List<String>>();
 
-    public String getKeyword() {
-        return this.keyword.toUpperCase();
-    }
+List<String> valSetOne = new ArrayList<String>();
+valSetOne.add("Familiar. Worked in Java.");
+valSetOne.add("Unique.");
+valSetOne.add("No doubles.");
 
-    public String partOfSpeech() {
-        return this.partOfSpeech;
-    }
+List<String> valSetTwo = new ArrayList<String>();
+valSetTwo.add("Wrong way.");
+valSetTwo.add("Go back.");
+valSetTwo.add("Oposite.");
 
-    @Override
-    public String toString() {
-        return this.keyword + " [" + this.partOfSpeech + "] : " + this.definition;
-    }
+List<String> valSetThree = new ArrayList<String>();
 
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-      
-        HashMap<String, ArrayList<Dictionary>> hmap = new HashMap<String, ArrayList<Dictionary>>();
+valSetThree.add("To be updated...");
+valSetThree.add("Temporary.");
 
-        for (Dictionary dict : Dictionary.values()) {
+List<String> valSetFour = new ArrayList<String>();
 
-                String keyword = dict.getKeyword();
+valSetFour.add("A set of pages.");
 
-                ArrayList<Dictionary> list = (hmap.containsKey(keyword)) ? hmap.get(keyword) : new ArrayList<Dictionary>();
-                list.add(dict);
-                hmap.put(keyword, list);      
-        }
+List<String> valSetFive = new ArrayList<String>();
+valSetFive.add("Can be ordered.");
 
-      
-        System.out.println("\n-----DICTIONARY JAVA  \n---- Sean Ibarra-\n");
+List<String> valSetSix = new ArrayList<String>();
+valSetSix.add("A person who fastens the pages of books.");
 
-        Boolean quite = true;
+List<String> valSetSeven = new ArrayList<String>();
+valSetSeven.add("A piece of furniture with shelves");
 
-        do {                  
-            System.out.print("Search: ");
-            String userinput = input.nextLine();
-            String[] splited = userinput.split(" ");
 
-            String word = null;
-            Boolean requestDistinct = false;
-            String partOfSpeech = null;
+map.put("distinct", valSetOne);
+map.put("Reverse", valSetTwo);
+map.put("Placeholder", valSetThree);
+map.put("book", valSetFour);
+map.put("bookable", valSetFive);
+map.put("bookbinder", valSetSix);
+map.put("bookCase", valSetSeven);
 
-            if (splited.length > 0) {
-                word = splited[0];
-            }
 
-            String[] partOfSpeeches = {"noun", "verb", "adjective", "adverb", "pronoun", "preposition", "conjunction", "interjection"};
-            if (splited.length > 1 && splited[1]!= null) {
-                if (splited[1].equalsIgnoreCase("distinct")) {
-                   requestDistinct = true;
-                } else if (Arrays.asList(partOfSpeeches).contains(splited[1].toLowerCase())){
-                    partOfSpeech = splited[1];
-                } else {
-                    System.out.println("   |");
-                    System.out.println("    <2nd argument must be a part of speech or \"distinct\">");
-                    System.out.println("   |");
-                    continue;
-                }
-            }
-            if (splited.length > 2 && splited[2]!= null) {
-                if (splited[2].equalsIgnoreCase("distinct")) {
-                   requestDistinct = true;
-                } else if (Arrays.asList(partOfSpeeches).contains(splited[2].toLowerCase())){
-                    partOfSpeech = splited[2];
-                } else {
-                    System.out.println("   |");
-                    System.out.println("    <2nd argument must be a part of speech or \"distinct\">");
-                    System.out.println("   |");
-                    continue;
-                }
-            }
+System.out.println("Search :");
+Scanner scanner = new Scanner(System.in);
+String searchStr = scanner.next();
+List<String> values = map.get(searchStr.toLowerCase());
+System.out.println("|");
+if (values == null) {
+System.out.println("<Not Found>");
+} else {
 
-            if(!userinput.equalsIgnoreCase("!q")) {
-                System.out.println("   |");
-                ArrayList<Dictionary> result = hmap.get(word.toUpperCase());
-                ArrayList<Dictionary> secondResult = (requestDistinct) ? returnDictionaryWithDistinctPartOfSpeech(result) : result;
-                ArrayList<Dictionary> thirdResult = (partOfSpeech != null) ? returnDictionaryWithSamePartOfSpeech(secondResult, partOfSpeech) : secondResult;
-
-                if (thirdResult != null && thirdResult.size()>0) {
-                    for(Dictionary key : thirdResult) {
-                        System.out.print("    " + key + "\n");
-                    }
-                } else {
-                    System.out.println("    <Not Found>");
-                }
-                System.out.println("   |");
-            } else {
-                System.out.println("\n----Thanks---");
-                quite = false;
-            }
-        } while(quite);
-    }
-
-    public static ArrayList<Dictionary> returnDictionaryWithDistinctPartOfSpeech(ArrayList<Dictionary> dictList) {
-        HashMap<String, Dictionary> hMap = new HashMap<String, Dictionary>();
-        if (dictList != null) {
-            for(Dictionary dict : dictList) {
-                String partOfSpeech = dict.partOfSpeech();
-                if(!hMap.containsKey(partOfSpeech)) {
-                    hMap.put(partOfSpeech, dict);
-                }
-            }
-        }
-        return new ArrayList<Dictionary>(hMap.values());
-    }
-
-    public static ArrayList<Dictionary> returnDictionaryWithSamePartOfSpeech(ArrayList<Dictionary> dictList, String partOfSpeech) {
-        ArrayList<Dictionary> result = new ArrayList<Dictionary>();
-        if (dictList != null) {
-            for(Dictionary dict : dictList) {
-                if (dict.partOfSpeech().equalsIgnoreCase(partOfSpeech)) {
-                    result.add(dict);
-                }
-            }
-        }
-        return result;
-    }
+for (String value : values) {
+System.out.println(searchStr + " : " + value);
+}
+}
+System.out.println("|");
+}
 }
